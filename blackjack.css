@@ -727,7 +727,13 @@ body {
 }
 
 
-.new-round-button:hover {
+.new-round-button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+
+.new-round-button:hover:not(:disabled) {
     background:
         rgba(20, 90, 60, .35);
 }
