@@ -1,16 +1,17 @@
 // ==========================================
 // RUSSIAN ROULETTE - VIRTUAL CASINO GAME
+// (needs casino.js loaded first: shared wallet)
 // ==========================================
 
-let balance = Number(localStorage.getItem("casinoBalance")) || 1000;
+const SPIN_TIME = 1500; // must match the CSS animation (1.5s)
 
 let currentBet = 0;
 let previousBets = [];
 
 let streak = 0;
-let multiplier = 1;
 
 let hasSpun = false;
+let isSpinning = false;
 let roundActive = false;
 
 const balanceDisplay = document.getElementById("balance");
@@ -32,23 +33,48 @@ const clearButton = document.getElementById("clearButton");
 const historyList = document.getElementById("historyList");
 
 
+// Tells casino.js when chips are on the table (blocks the $0 reset trick)
+window.casinoStakeInPlay = () => roundActive || currentBet > 0;
+
+
+// ==========================================
+// MULTIPLIER
+// ==========================================
+
+/*
+   Total return on the NEXT win (stake included):
+   x1.5 -> x2 -> x2.5 -> x3 (capped)
+*/
+function nextMultiplier() {
+
+    return Math.min(3, 1 + (streak + 1) * 0.5);
+
+}
+
+
 // ==========================================
 // DISPLAY
 // ==========================================
 
 function updateDisplay() {
 
-    balanceDisplay.textContent =
-        "$" + balance.toLocaleString();
+    updateCasinoBalanceDisplays();
 
-    currentBetDisplay.textContent =
-        "$" + currentBet.toLocaleString();
+    currentBetDisplay.textContent = formatMoney(currentBet);
 
     streakDisplay.textContent = streak;
 
-    multiplierDisplay.textContent = multiplier;
+    // Shows what the next win will actually pay
+    multiplierDisplay.textContent = nextMultiplier();
 
-    localStorage.setItem("casinoBalance", balance);
+}
+
+
+function setResult(text, type = "") {
+
+    resultDisplay.textContent = text;
+
+    resultDisplay.className = type ? "result " + type : "result";
 
 }
 
@@ -65,19 +91,18 @@ document.querySelectorAll(".chip").forEach(chip => {
 
         const value = Number(chip.dataset.value);
 
-        if (value > balance) {
-            resultDisplay.textContent = "NOT ENOUGH BALANCE";
+        if (!removeBalance(value)) {
+
+            setResult("NOT ENOUGH BALANCE");
+
             return;
         }
 
         previousBets.push(value);
 
         currentBet += value;
-        balance -= value;
 
-        resultDisplay.textContent = "BET PLACED";
-
-        resultDisplay.className = "result";
+        setResult("BET PLACED");
 
         updateDisplay();
 
@@ -96,11 +121,11 @@ undoButton.addEventListener("click", () => {
 
     if (previousBets.length === 0) return;
 
-    const lastBet =
-        previousBets.pop();
+    const lastBet = previousBets.pop();
 
     currentBet -= lastBet;
-    balance += lastBet;
+
+    addBalance(lastBet);
 
     updateDisplay();
 
@@ -115,15 +140,13 @@ clearButton.addEventListener("click", () => {
 
     if (roundActive) return;
 
-    balance += currentBet;
+    addBalance(currentBet);
 
     currentBet = 0;
 
     previousBets = [];
 
-    resultDisplay.textContent = "PLACE YOUR BET";
-
-    resultDisplay.className = "result";
+    setResult("PLACE YOUR BET");
 
     updateDisplay();
 
@@ -138,15 +161,17 @@ allInButton.addEventListener("click", () => {
 
     if (roundActive) return;
 
-    if (balance <= 0) return;
+    const available = getBalance();
 
-    currentBet += balance;
+    if (available <= 0) return;
 
-    previousBets.push(balance);
+    currentBet += available;
 
-    balance = 0;
+    previousBets.push(available);
 
-    resultDisplay.textContent = "ALL IN";
+    setBalance(0);
+
+    setResult("ALL IN");
 
     updateDisplay();
 
@@ -159,12 +184,11 @@ allInButton.addEventListener("click", () => {
 
 spinButton.addEventListener("click", () => {
 
-    if (roundActive) return;
+    if (roundActive || isSpinning) return;
 
     if (currentBet <= 0) {
 
-        resultDisplay.textContent =
-            "PLACE A BET FIRST";
+        setResult("PLACE A BET FIRST");
 
         return;
     }
@@ -176,10 +200,22 @@ spinButton.addEventListener("click", () => {
 
     cylinder.classList.add("spinning");
 
+    isSpinning = true;
     hasSpun = true;
 
-    resultDisplay.textContent =
-        "CYLINDER SPINNING...";
+    setResult("CYLINDER SPINNING...");
+
+    setTimeout(() => {
+
+        cylinder.classList.remove("spinning");
+
+        isSpinning = false;
+
+        if (!roundActive) {
+            setResult("READY — PLAY ROUND");
+        }
+
+    }, SPIN_TIME);
 
 });
 
@@ -194,16 +230,21 @@ playButton.addEventListener("click", () => {
 
     if (currentBet <= 0) {
 
-        resultDisplay.textContent =
-            "PLACE A BET FIRST";
+        setResult("PLACE A BET FIRST");
+
+        return;
+    }
+
+    if (isSpinning) {
+
+        setResult("WAIT FOR THE SPIN");
 
         return;
     }
 
     if (!hasSpun) {
 
-        resultDisplay.textContent =
-            "SPIN THE CYLINDER FIRST";
+        setResult("SPIN THE CYLINDER FIRST");
 
         return;
     }
@@ -213,22 +254,16 @@ playButton.addEventListener("click", () => {
     playButton.disabled = true;
     spinButton.disabled = true;
 
-    resultDisplay.textContent =
-        "WAITING...";
+    setResult("WAITING...");
 
-    // Give the animation some time
     setTimeout(() => {
 
-        const chamberLoaded =
-            Math.floor(Math.random() * 6);
+        // 1 loaded chamber out of 6
+        const chamberLoaded = Math.floor(Math.random() * 6);
 
-        const selectedChamber =
-            Math.floor(Math.random() * 6);
+        const selectedChamber = Math.floor(Math.random() * 6);
 
-        const survived =
-            chamberLoaded !== selectedChamber;
-
-        if (survived) {
+        if (chamberLoaded !== selectedChamber) {
 
             winRound();
 
@@ -249,28 +284,19 @@ playButton.addEventListener("click", () => {
 
 function winRound() {
 
+    const multiplier = nextMultiplier();
+
     streak++;
 
-    /*
-       Every consecutive safe round increases
-       the multiplier.
+    // The bet was already taken from the wallet, so this is the total
+    // return. The message shows the profit.
+    const payout = Math.floor(currentBet * multiplier);
 
-       x1 -> x1.5 -> x2 -> x2.5 -> x3
-    */
+    const profit = payout - currentBet;
 
-    multiplier =
-        Math.min(3, 1 + streak * 0.5);
+    addBalance(payout);
 
-    const winnings =
-        Math.floor(currentBet * multiplier);
-
-    balance += winnings;
-
-    resultDisplay.textContent =
-        "CLICK — YOU WIN $" + winnings;
-
-    resultDisplay.className =
-        "result safe";
+    setResult("CLICK — YOU WIN " + formatMoney(profit), "safe");
 
     addHistory("CLICK", multiplier, true);
 
@@ -286,13 +312,8 @@ function winRound() {
 function loseRound() {
 
     streak = 0;
-    multiplier = 1;
 
-    resultDisplay.textContent =
-        "BANG — BET LOST";
-
-    resultDisplay.className =
-        "result danger";
+    setResult("BANG — BET LOST", "danger");
 
     addHistory("BANG", 0, false);
 
@@ -307,19 +328,13 @@ function loseRound() {
 
 function addHistory(type, multiplierValue, safe) {
 
-    const item =
-        document.createElement("div");
+    const item = document.createElement("div");
 
-    item.className =
-        "history-item";
+    item.className = "history-item";
 
-    const icon =
-        safe ? "✓" : "×";
+    const icon = safe ? "✓" : "×";
 
-    const multiplierText =
-        safe
-            ? "x" + multiplierValue
-            : "−";
+    const multiplierText = safe ? "x" + multiplierValue : "−";
 
     item.innerHTML = `
         <span class="${safe ? "safe" : "danger"}">
@@ -337,9 +352,7 @@ function addHistory(type, multiplierValue, safe) {
 
     while (historyList.children.length > 5) {
 
-        historyList.removeChild(
-            historyList.lastChild
-        );
+        historyList.removeChild(historyList.lastChild);
 
     }
 
@@ -368,28 +381,13 @@ function finishRound() {
 
 
 // ==========================================
-// BALANCE RESET
+// BALANCE RESET (handled by casino.js)
 // ==========================================
 
 balanceDisplay.style.cursor = "pointer";
 
 balanceDisplay.title =
     "Click when balance reaches $0 to reset";
-
-balanceDisplay.addEventListener("click", () => {
-
-    if (balance === 0 && !roundActive) {
-
-        balance = 1000;
-
-        updateDisplay();
-
-        resultDisplay.textContent =
-            "BALANCE RESET TO $1,000";
-
-    }
-
-});
 
 
 // ==========================================
