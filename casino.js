@@ -7,6 +7,14 @@ const CASINO_BALANCE_KEY = "royalCasinoBalance";
 const DEFAULT_BALANCE = 1000;
 
 
+// Games override this so the wallet knows when chips are on the table.
+// The $0 -> $1,000 reset is blocked while it returns true, otherwise you
+// could go all-in, click the balance and get a free $1,000.
+window.casinoStakeInPlay = function () {
+    return false;
+};
+
+
 // ------------------------------------------
 // GET BALANCE
 // ------------------------------------------
@@ -25,7 +33,12 @@ function getBalance() {
         return DEFAULT_BALANCE;
     }
 
-    return Number(saved);
+    const value = Number(saved);
+
+    // Guard against a corrupted / hand-edited value
+    return Number.isFinite(value) && value >= 0
+        ? value
+        : DEFAULT_BALANCE;
 }
 
 
@@ -84,7 +97,8 @@ function removeBalance(amount) {
 
 function formatMoney(amount) {
 
-    return "$" + Number(amount).toLocaleString();
+    // en-US so every page shows $1,000 (not $1.000 on German browsers)
+    return "$" + Number(amount).toLocaleString("en-US");
 }
 
 
@@ -130,7 +144,11 @@ document.addEventListener("click", event => {
 
     if (!balanceElement) return;
 
-    if (getBalance() === 0) {
+    // $0 only counts as "broke" when nothing is staked
+    if (
+        getBalance() === 0 &&
+        !window.casinoStakeInPlay()
+    ) {
 
         resetCasinoBalance();
 
@@ -144,6 +162,19 @@ document.addEventListener("click", event => {
 
         }, 600);
 
+    }
+
+});
+
+
+// ------------------------------------------
+// KEEP OPEN TABS IN SYNC
+// ------------------------------------------
+
+window.addEventListener("storage", event => {
+
+    if (event.key === CASINO_BALANCE_KEY) {
+        updateCasinoBalanceDisplays();
     }
 
 });
