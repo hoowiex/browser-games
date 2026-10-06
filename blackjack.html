@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Royal Casino - Blackjack</title>
+
+    <link
+        rel="stylesheet"
+        href="blackjack.css"
+    >
+
+</head>
+
+
+<body>
+
+<main class="blackjack-table">
+
+
+    <!-- TOP BAR -->
+
+    <header class="bj-header">
+
+        <a
+            href="index.html"
+            class="lobby-button"
+        >
+            ← LOBBY
+        </a>
+
+
+        <div class="bj-title">
+
+            <span>♠</span>
+
+            <h1>ROYAL BLACKJACK</h1>
+
+            <span>♠</span>
+
+        </div>
+
+
+        <div
+            class="balance-display"
+            data-casino-balance
+        >
+            $1,000
+        </div>
+
+    </header>
+
+
+
+    <!-- DEALER -->
+
+    <section class="dealer-area">
+
+        <h2>DEALER</h2>
+
+        <div
+            class="cards"
+            id="dealerCards"
+        ></div>
+
+        <div
+            class="hand-score"
+            id="dealerScore"
+        >
+            ?
+        </div>
+
+    </section>
+
+
+
+    <!-- PLAYER -->
+
+    <section
+        class="player-area"
+        id="playerArea"
+    >
+
+        <h2>YOU</h2>
+
+        <div
+            id="playerHands"
+            class="player-hands"
+        ></div>
+
+    </section>
+
+
+
+    <!-- STATUS -->
+
+    <div
+        class="game-message"
+        id="gameMessage"
+    >
+        PLACE YOUR BET
+    </div>
+
+
+
+    <!-- ACTIONS -->
+
+    <section class="actions">
+
+        <button id="hitButton">
+            HIT
+        </button>
+
+        <button id="standButton">
+            STAND
+        </button>
+
+        <button id="doubleButton">
+            DOUBLE
+        </button>
+
+        <button id="splitButton">
+            SPLIT
+        </button>
+
+        <button id="insuranceButton">
+            INSURANCE
+        </button>
+
+        <a
+            href="russian-roulette.html"
+            class="roulette-link"
+        >
+            ◉ ROULETTE
+        </a>
+
+    </section>
+
+
+
+    <!-- BETTING -->
+
+    <section class="bet-area">
+
+        <div class="bet-info">
+
+            <span>
+                BET:
+                <strong id="betDisplay">$0</strong>
+            </span>
+
+            <span>
+                INSURANCE:
+                <strong id="insuranceDisplay">$0</strong>
+            </span>
+
+        </div>
+
+
+        <div class="chips">
+
+            <button
+                class="chip red"
+                data-value="10"
+            >
+                $10
+            </button>
+
+            <button
+                class="chip blue"
+                data-value="25"
+            >
+                $25
+            </button>
+
+            <button
+                class="chip green"
+                data-value="50"
+            >
+                $50
+            </button>
+
+            <button
+                class="chip black"
+                data-value="100"
+            >
+                $100
+            </button>
+
+            <button
+                class="chip purple"
+                data-value="500"
+            >
+                $500
+            </button>
+
+        </div>
+
+
+        <div class="bet-buttons">
+
+            <button id="undoBetButton">
+                ↶ UNDO
+            </button>
+
+            <button id="clearBetButton">
+                CLEAR BET
+            </button>
+
+            <button id="allInButton">
+                ALL IN
+            </button>
+
+        </div>
+
+
+        <button
+            id="dealButton"
+            class="deal-button"
+        >
+            DEAL
+        </button>
+
+
+        <button
+            id="newRoundButton"
+            class="new-round-button"
+        >
+            NEW ROUND
+        </button>
+
+    </section>
+
+
+</main>
+
+
+<script src="casino.js"></script>
+<script src="blackjack.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,533 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #32100c,
+            #080403 55%,
+            #020202
+        );
+
+    color: #e7bd68;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+}
+
+
+.casino-page {
+
+    width: min(1400px, 94%);
+
+    margin: auto;
+
+    padding-bottom: 50px;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.casino-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 25px 0;
+}
+
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.logo-symbol {
+
+    font-size: 55px;
+
+    color: #e4ad45;
+
+    text-shadow:
+        0 0 15px
+        rgba(225, 165, 55, .3);
+}
+
+
+.logo h1 {
+
+    font-size: 26px;
+
+    letter-spacing: 4px;
+
+    color: #f0c86e;
+}
+
+
+.logo span {
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: #96733d;
+}
+
+
+.balance-box {
+
+    padding: 15px 30px;
+
+    border: 1px solid #b77a20;
+
+    border-radius: 30px;
+
+    background:
+        rgba(0, 0, 0, .65);
+
+    color: #f4c968;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 20px
+        rgba(190, 125, 25, .08);
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.hero {
+
+    min-height: 330px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    border-top:
+        1px solid #5e3c16;
+
+    border-bottom:
+        1px solid #5e3c16;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(125, 20, 10, .45),
+            transparent 65%
+        );
+}
+
+
+.hero-content {
+
+    animation:
+        fadeIn 1s ease;
+}
+
+
+.welcome {
+
+    letter-spacing: 6px;
+
+    font-size: 14px;
+
+    color: #a37b3b;
+}
+
+
+.hero h2 {
+
+    margin-top: 15px;
+
+    font-size:
+        clamp(45px, 7vw, 90px);
+
+    line-height: .95;
+
+    letter-spacing: 4px;
+
+    color: #edc46d;
+
+    text-shadow:
+        0 0 25px
+        rgba(230, 175, 70, .2);
+}
+
+
+.hero p {
+
+    margin-top: 20px;
+
+    color: #9d8967;
+
+    font-size: 17px;
+}
+
+
+/* ==========================================
+   SECTION TITLE
+========================================== */
+
+.games-section {
+
+    padding-top: 50px;
+}
+
+
+.section-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    justify-content: center;
+
+    margin-bottom: 30px;
+}
+
+
+.section-title span {
+
+    width: 100px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #a96e1e
+        );
+}
+
+
+.section-title span:last-child {
+
+    background:
+        linear-gradient(
+            90deg,
+            #a96e1e,
+            transparent
+        );
+}
+
+
+.section-title h2 {
+
+    font-size: 22px;
+
+    letter-spacing: 4px;
+}
+
+
+/* ==========================================
+   GAME GRID
+========================================== */
+
+.games-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+
+.game-card {
+
+    position: relative;
+
+    min-height: 310px;
+
+    padding: 35px;
+
+    border: 1px solid #8e5d1c;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color: inherit;
+
+    overflow: hidden;
+
+    transition:
+        transform .3s,
+        box-shadow .3s,
+        border-color .3s;
+}
+
+
+.game-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(200, 140, 40, .18),
+            transparent 55%
+        );
+
+    pointer-events: none;
+}
+
+
+.game-card:hover {
+
+    transform:
+        translateY(-8px);
+
+    border-color: #e2a83b;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, .55),
+        0 0 30px
+        rgba(200, 140, 40, .08);
+}
+
+
+.blackjack-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            #092d20,
+            #03130e
+        );
+}
+
+
+.roulette-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            #36100c,
+            #100403
+        );
+}
+
+
+.locked-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            #151515,
+            #070707
+        );
+
+    opacity: .55;
+}
+
+
+.game-icon {
+
+    font-size: 70px;
+
+    margin-bottom: 25px;
+
+    color: #e5b24e;
+
+    text-shadow:
+        0 0 20px
+        rgba(225, 170, 60, .25);
+}
+
+
+.game-category {
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    color: #947344;
+}
+
+
+.game-card h3 {
+
+    margin-top: 8px;
+
+    font-size: 32px;
+
+    letter-spacing: 2px;
+
+    color: #efc86e;
+}
+
+
+.game-card p {
+
+    margin-top: 15px;
+
+    min-height: 45px;
+
+    line-height: 1.5;
+
+    color: #a99575;
+}
+
+
+.play-game {
+
+    display: inline-block;
+
+    margin-top: 25px;
+
+    padding:
+        11px 20px;
+
+    border:
+        1px solid #a66d1d;
+
+    border-radius: 5px;
+
+    color: #e9bd63;
+
+    letter-spacing: 1px;
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 60px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid #3d2914;
+
+    color: #6c593c;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+}
+
+
+/* ==========================================
+   ANIMATION
+========================================== */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 850px) {
+
+    .games-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .game-card {
+
+        min-height: 260px;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .casino-header {
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .logo h1 {
+
+        font-size: 18px;
+    }
+
+    .logo-symbol {
+
+        font-size: 40px;
+    }
+
+    .balance-box {
+
+        padding:
+            10px 15px;
+
+        font-size: 16px;
+    }
+
+    .hero {
+
+        min-height: 270px;
+    }
+
+    .section-title span {
+
+        width: 40px;
+    }
+
+}

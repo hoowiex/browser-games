@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russian Roulette</title>
+    <link rel="stylesheet" href="roulette.css">
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <main class="game">
+
+        <!-- TOP -->
+        <header>
+            <a href="index.html" class="back-button">
+                ← BACK TO BLACKJACK
+            </a>
+
+            <button class="sound-button" id="soundButton">🔊</button>
+        </header>
+
+        <section class="title">
+            <div class="title-icon">◉</div>
+            <h1>RUSSIAN ROULETTE</h1>
+            <p>ONE CHAMBER. ONE CHANCE.</p>
+        </section>
+
+        <section class="layout">
+
+            <!-- LEFT PANEL -->
+            <aside class="side-panel left-panel">
+
+                <div class="stat">
+                    <span>💰 BALANCE</span>
+                    <strong id="balance">$1,000</strong>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="stat">
+                    <span>🎯 CURRENT BET</span>
+                    <strong id="currentBet">$0</strong>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="stat">
+                    <span>🔥 STREAK</span>
+                    <strong id="streak">0</strong>
+                </div>
+
+                <div class="multiplier">
+                    x<span id="multiplier">1</span>
+                    <small>MULTIPLIER</small>
+                </div>
+
+            </aside>
+
+
+            <!-- CENTER -->
+            <section class="center">
+
+                <div class="cylinder-area">
+
+                    <div class="revolver">
+                        <div class="gun-body"></div>
+                        <div class="handle"></div>
+                        <div class="barrel"></div>
+                    </div>
+
+                    <div class="cylinder" id="cylinder">
+
+                        <div class="chamber chamber-1"></div>
+                        <div class="chamber chamber-2"></div>
+                        <div class="chamber chamber-3"></div>
+                        <div class="chamber chamber-4"></div>
+                        <div class="chamber chamber-5"></div>
+                        <div class="chamber chamber-6"></div>
+
+                        <div class="center-piece"></div>
+
+                    </div>
+
+                </div>
+
+
+                <button class="spin-button" id="spinButton">
+                    <span>⟳</span>
+                    SPIN CYLINDER
+                </button>
+
+                <div class="chambers">
+                    <span></span>
+                    CHAMBERS: 6
+                    <span></span>
+                </div>
+
+
+                <div class="result" id="result">
+                    PLACE YOUR BET
+                </div>
+
+            </section>
+
+
+            <!-- RIGHT PANEL -->
+            <aside class="right-column">
+
+                <div class="info-panel">
+
+                    <h2>HOW IT WORKS</h2>
+
+                    <div class="step">
+                        <b>1</b>
+                        Place your bet.
+                    </div>
+
+                    <div class="step">
+                        <b>2</b>
+                        Spin the cylinder.
+                    </div>
+
+                    <div class="step">
+                        <b>3</b>
+                        Press "Play Round".
+                    </div>
+
+                    <div class="step">
+                        <b>4</b>
+                        See if it's a click or a bang!
+                    </div>
+
+                    <div class="info-line"></div>
+
+                    <p>Survive and win.<br>Or lose it all.</p>
+
+                </div>
+
+
+                <div class="history">
+
+                    <h2>LAST 5 ROUNDS</h2>
+
+                    <div id="historyList">
+
+                        <div class="history-item">
+                            <span class="safe">✓</span>
+                            CLICK
+                            <small>x1</small>
+                        </div>
+
+                        <div class="history-item">
+                            <span class="safe">✓</span>
+                            CLICK
+                            <small>x1</small>
+                        </div>
+
+                        <div class="history-item">
+                            <span class="danger">×</span>
+                            BANG
+                            <small>−</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+
+        <!-- BETTING -->
+        <section class="betting">
+
+            <h2>CHOOSE YOUR BET</h2>
+
+            <div class="chips">
+
+                <button class="chip red" data-value="10">
+                    <span>$10</span>
+                </button>
+
+                <button class="chip blue" data-value="25">
+                    <span>$25</span>
+                </button>
+
+                <button class="chip green" data-value="50">
+                    <span>$50</span>
+                </button>
+
+                <button class="chip black" data-value="100">
+                    <span>$100</span>
+                </button>
+
+                <button class="chip purple" data-value="500">
+                    <span>$500</span>
+                </button>
+
+            </div>
+
+
+            <div class="bet-controls">
+
+                <button id="undoButton">
+                    ↶ UNDO
+                </button>
+
+                <button id="allInButton">
+                    🪙 ALL IN
+                </button>
+
+                <button id="clearButton">
+                    🗑 CLEAR BET
+                </button>
+
+            </div>
+
+
+            <button class="play-button" id="playButton">
+                ▶ PLAY ROUND
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <script src="roulette.js"></script>
+
+</body>
+</html>
