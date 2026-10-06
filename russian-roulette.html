@@ -16,7 +16,7 @@
         <!-- TOP -->
         <header>
             <a href="index.html" class="back-button">
-                ← BACK TO BLACKJACK
+                ← LOBBY
             </a>
 
             <button class="sound-button" id="soundButton">🔊</button>
@@ -35,7 +35,7 @@
 
                 <div class="stat">
                     <span>💰 BALANCE</span>
-                    <strong id="balance">$1,000</strong>
+                    <strong id="balance" data-casino-balance>$1,000</strong>
                 </div>
 
                 <div class="line"></div>
@@ -146,24 +146,6 @@
 
                     <div id="historyList">
 
-                        <div class="history-item">
-                            <span class="safe">✓</span>
-                            CLICK
-                            <small>x1</small>
-                        </div>
-
-                        <div class="history-item">
-                            <span class="safe">✓</span>
-                            CLICK
-                            <small>x1</small>
-                        </div>
-
-                        <div class="history-item">
-                            <span class="danger">×</span>
-                            BANG
-                            <small>−</small>
-                        </div>
-
                     </div>
 
                 </div>
@@ -229,6 +211,7 @@
     </main>
 
 
+    <script src="casino.js"></script>
     <script src="roulette.js"></script>
 
 </body>
